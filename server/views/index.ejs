@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>[페이지 제목]</title>
+  </head>
+  <body>
+    <form action="/api/auth/login" method="post">
+      <label for="#email">id</label>
+      <input type="text" name="email" id="email" />
+      <label for="#password">password</label>
+      <input type="password" name="password" id="password" />
+      <button type="submit">login</button>
+    </form>
+    <a href="/api/auth/login/naver"><button>naver login</button></a>
+    <a href="/api/auth/login/google"><button>google login</button></a>
+
+    <form action="/api/signup" method="post">
+      <input type="email" name="email" id="email"/>
+      <input type="text" name="nickname" id="nickname"/>
+      <input type="password" name="password" id="password"/>
+      <button type="submit">signup</button>
+    </form>
+  </body>
+</html>
