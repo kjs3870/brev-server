@@ -1,10 +1,14 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import User from "../sequelize/models/user.model";
 import Movie from "../sequelize/models/movie.model";
 import Repo from "../sequelize/models/repo.model";
 
 const router = express.Router();
+
+interface UserRequest extends Request {
+  user: User;
+}
 
 const getUserInfo = async (email: string) => {
   const userInfo = await User.findOne({
@@ -16,20 +20,28 @@ const getUserInfo = async (email: string) => {
   return userInfo;
 };
 
+const isAuth = (req: UserRequest, res: Response, next: NextFunction) => {
+  if (!req.user) return res.json({ isAuth: false });
+  return next();
+};
+
+router.get("/isauth", isAuth, async (req: UserRequest, res: Response) => {
+  const { email } = req.user;
+  try {
+    const userInfo = await getUserInfo(email);
+    res.status(200).json({ isAuth: true, userInfo });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
 /** local login */
 router.post(
   "/login",
-  passport.authenticate("local"),
-  async (req: Request, res: Response) => {
-    const email = req.user.email as string;
-
-    try {
-      const userInfo = await getUserInfo(email);
-      res.status(200).send(userInfo);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
+  passport.authenticate("local", {
+    successRedirect: "http://localhost:3000",
+    failureRedirect: "/",
+  })
 );
 
 /** naver login */
@@ -37,17 +49,10 @@ router.get("/login/naver", passport.authenticate("naver"));
 
 router.get(
   "/login/naver/callback",
-  passport.authenticate("naver"),
-  async (req: Request, res: Response) => {
-    const email = req.user.email as string;
-
-    try {
-      const userInfo = await getUserInfo(email);
-      res.status(200).send(userInfo);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
+  passport.authenticate("naver", {
+    successRedirect: "http://localhost:3000",
+    failureRedirect: "/",
+  })
 );
 
 /** google login */
@@ -58,17 +63,10 @@ router.get(
 
 router.get(
   "/login/google/callback",
-  passport.authenticate("google"),
-  async (req: Request, res: Response) => {
-    const email = req.user.email as string;
-
-    try {
-      const userInfo = await getUserInfo(email);
-      res.status(200).send(userInfo);
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  }
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:3000",
+    failureRedirect: "/",
+  })
 );
 
 export default router;

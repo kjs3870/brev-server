@@ -5,10 +5,10 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import bcrypt from "bcrypt";
 import User from "../sequelize/models/user.model";
 import secretConfig from "./config.secret";
-import userInterface from "../interface/interface";
+import { UserInterface } from "../interface/interface";
 
 const passportConfig = (): void => {
-  passport.serializeUser((user: userInterface, done) => {
+  passport.serializeUser((user: UserInterface, done) => {
     done(null, user.email);
   });
 
