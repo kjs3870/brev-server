@@ -5,6 +5,7 @@ import Movie from "../sequelize/models/movie.model";
 import Repo from "../sequelize/models/repo.model";
 
 const router = express.Router();
+const CLIENT_URL = "http://localhost:3000";
 
 interface UserRequest extends Request {
   user: User;
@@ -39,8 +40,8 @@ router.get("/isauth", isAuth, async (req: UserRequest, res: Response) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "http://localhost:3000",
-    failureRedirect: "/",
+    successRedirect: CLIENT_URL,
+    failureRedirect: CLIENT_URL,
   })
 );
 
@@ -50,8 +51,8 @@ router.get("/login/naver", passport.authenticate("naver"));
 router.get(
   "/login/naver/callback",
   passport.authenticate("naver", {
-    successRedirect: "http://localhost:3000",
-    failureRedirect: "/",
+    successRedirect: CLIENT_URL,
+    failureRedirect: CLIENT_URL,
   })
 );
 
@@ -64,9 +65,15 @@ router.get(
 router.get(
   "/login/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:3000",
-    failureRedirect: "/",
+    successRedirect: CLIENT_URL,
+    failureRedirect: CLIENT_URL,
   })
 );
+
+/** logout */
+router.get("/logout", (req: Request, res: Response) => {
+  req.logOut();
+  res.redirect(CLIENT_URL);
+});
 
 export default router;

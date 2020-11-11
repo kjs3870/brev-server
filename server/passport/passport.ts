@@ -40,7 +40,7 @@ const passportConfig = (): void => {
               .catch((err) => {
                 return done(err);
               });
-            return done(null, user);
+            return null;
           })
           .catch((err) => {
             return done(err);
