@@ -4,7 +4,7 @@ import { Strategy as NaverStrategy } from "passport-naver";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import bcrypt from "bcrypt";
 import User from "../sequelize/models/user.model";
-import secretConfig from "./config.secret";
+import AppConfig from "../config/config.secret";
 import { UserInterface } from "../interface/interface";
 
 const passportConfig = (): void => {
@@ -51,7 +51,7 @@ const passportConfig = (): void => {
 
   passport.use(
     new NaverStrategy(
-      secretConfig.naver,
+      AppConfig.naver,
       (accessToken, refreshToken, profile, done) => {
         User.findOne({ where: { email: profile.emails[0].value } })
           .then((user) => {
@@ -82,7 +82,7 @@ const passportConfig = (): void => {
 
   passport.use(
     new GoogleStrategy(
-      secretConfig.google,
+      AppConfig.google,
       (accessToken, refreshToken, profile, cb) => {
         User.findOne({ where: { email: profile.id } })
           .then((user) => {

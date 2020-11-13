@@ -2,7 +2,7 @@
 package-lock.json
 
 # passport application config
-server/passport/config.secret.ts
+server/config/config.secret.ts
 
 # Logs
 logs
