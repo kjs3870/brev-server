@@ -26,4 +26,24 @@ type User = {
   repos: [Repo];
 };
 
-export { UserInterface, Movie, Repo, User };
+interface MovieItem {
+  title: string;
+  link: string;
+  image: string;
+  subtitle: string;
+  pubDate: string;
+  director: string;
+  actor: string;
+  userRating: string;
+}
+
+interface MovieResponse {
+  data: {
+    total: number;
+    start: number;
+    display: number;
+    items: [MovieItem];
+  };
+}
+
+export { UserInterface, Movie, Repo, User, MovieResponse };
