@@ -1,20 +1,44 @@
 import express, { Request, Response, NextFunction } from "express";
 import passport from "passport";
+import UserRequest from "../interface/request";
 import User from "../sequelize/models/user.model";
 import Movie from "../sequelize/models/movie.model";
 import Repo from "../sequelize/models/repo.model";
+import Genre from "../sequelize/models/genre.model";
+import Country from "../sequelize/models/country.model";
+import Actor from "../sequelize/models/actor.model";
+import Director from "../sequelize/models/director.model";
 
 const router = express.Router();
 const CLIENT_URL = "http://localhost:3000";
 
-interface UserRequest extends Request {
-  user: User;
-}
-
 const getUserInfo = async (email: string) => {
   const userInfo = await User.findOne({
     attributes: ["email", "nickname"],
-    include: [Movie, Repo],
+    include: [
+      {
+        model: Movie,
+        include: [
+          {
+            model: Genre,
+            attributes: ["genre"],
+          },
+          {
+            model: Country,
+            attributes: ["country"],
+          },
+          {
+            model: Actor,
+            attributes: ["name"],
+          },
+          {
+            model: Director,
+            attributes: ["name"],
+          },
+        ],
+      },
+      Repo,
+    ],
     where: { email },
   });
 
