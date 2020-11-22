@@ -44,9 +44,9 @@ class Movie extends Model<Movie> {
   @HasMany(() => Actor)
   actors: Actor[];
 
-  @Default(0)
+  @Default("0")
   @Column
-  userRating: number;
+  userRating: string;
 
   @Column(DataType.STRING(1000))
   story: string;
