@@ -1,5 +1,6 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import passport from "passport";
+import isAuth from "../my_modules/middleware/isAuth";
 import UserRequest from "../interface/request";
 import User from "../sequelize/models/user.model";
 import Movie from "../sequelize/models/movie.model";
@@ -43,11 +44,6 @@ const getUserInfo = async (email: string) => {
   });
 
   return userInfo;
-};
-
-const isAuth = (req: UserRequest, res: Response, next: NextFunction) => {
-  if (!req.user) return res.json({ isAuth: false });
-  return next();
 };
 
 router.get("/isauth", isAuth, async (req: UserRequest, res: Response) => {
