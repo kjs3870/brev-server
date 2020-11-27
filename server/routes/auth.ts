@@ -48,6 +48,7 @@ const getUserInfo = async (email: string) => {
 
 router.get("/isauth", isAuth, async (req: UserRequest, res: Response) => {
   const { email } = req.user;
+
   try {
     const userInfo = await getUserInfo(email);
     res.status(200).json({ isAuth: true, userInfo });
@@ -62,6 +63,7 @@ router.post(
   passport.authenticate("local", {
     successRedirect: CLIENT_URL,
     failureRedirect: CLIENT_URL,
+    failureFlash: true,
   })
 );
 
@@ -73,13 +75,14 @@ router.get(
   passport.authenticate("naver", {
     successRedirect: CLIENT_URL,
     failureRedirect: CLIENT_URL,
+    failureFlash: true,
   })
 );
 
 /** google login */
 router.get(
   "/login/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 router.get(
@@ -87,6 +90,7 @@ router.get(
   passport.authenticate("google", {
     successRedirect: CLIENT_URL,
     failureRedirect: CLIENT_URL,
+    failureFlash: true,
   })
 );
 

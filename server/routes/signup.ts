@@ -9,12 +9,14 @@ router.post("/", async (req: Request, res: Response) => {
   const inputUser = req.body as User;
 
   try {
+    const user = await User.findOne({ where: { email: inputUser.email } });
+    if (user) return res.send({ error: "exist email" });
     inputUser.password = await bcrypt.hash(inputUser.password, saltRounds);
     const iu: User = await User.create(inputUser);
 
-    res.status(200).send({ email: iu.email, nickname: iu.nickname });
+    return res.status(200).send({ email: iu.email, nickname: iu.nickname });
   } catch (e) {
-    res.status(400).redirect("/");
+    return res.send(e);
   }
 });
 

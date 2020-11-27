@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
+import flash from "connect-flash";
 import sequelize from "./sequelize/sequelize";
 import passportConfig from "./passport/passport";
 import apiRouter from "./routes/api";
@@ -22,6 +23,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig();

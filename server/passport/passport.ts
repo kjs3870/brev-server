@@ -24,25 +24,22 @@ const passportConfig = (): void => {
       { usernameField: "email", passwordField: "password" },
       (email, password, done) => {
         User.findOne({ where: { email } })
-          .then((user) => {
+          .then(async (user) => {
             if (!user) {
-              return done(null, false, { message: "Incorrect id." });
-            }
-            bcrypt
-              .compare(password, user.password)
-              .then((result) => {
-                if (!result) {
-                  return done(null, false, { message: "Incoreect password." });
-                }
-                return done(null, user);
-              })
-              .catch((err) => {
-                return done(err);
+              return done(null, false, {
+                message: "Incorrect id.",
               });
-            return null;
+            }
+
+            const pwdCompareResult = await bcrypt
+              .compare(password, user.password)
+              .catch((err) => console.error(err));
+
+            if (pwdCompareResult) return done(null, user);
+            return done(null, false, { message: "Incorrect password!" });
           })
-          .catch((err) => {
-            return done(err);
+          .catch(() => {
+            return done(null, false);
           });
       }
     )
@@ -53,27 +50,30 @@ const passportConfig = (): void => {
       AppConfig.naver,
       (accessToken, refreshToken, profile, done) => {
         User.findOne({ where: { email: profile.emails[0].value } })
-          .then((user) => {
+          .then(async (user) => {
+            let isCreated = false;
+            let createUser: User;
             if (!user) {
-              const createUser = new User({
+              createUser = new User({
                 email: profile.emails[0].value,
                 nickname: profile.displayName,
                 password: "naver_provided",
               });
 
-              createUser
-                .save()
-                .then(() => {
-                  return done(null, createUser);
-                })
-                .catch((err) => {
-                  return done(err, createUser);
-                });
-            }
+              await createUser.save().catch((err) => {
+                console.error(err);
+              });
+
+              isCreated = true;
+            } else if (user.password !== "naver_provided")
+              return done(null, false, { message: "Not a naver account." });
+
+            if (isCreated)
+              return done(null, false, { message: "Sign up success!" });
             return done(null, user);
           })
-          .catch((err) => {
-            return done(err, null);
+          .catch(() => {
+            return done(null, false);
           });
       }
     )
@@ -83,24 +83,27 @@ const passportConfig = (): void => {
     new GoogleStrategy(
       AppConfig.google,
       (accessToken, refreshToken, profile, cb) => {
-        User.findOne({ where: { email: profile.id } })
-          .then((user) => {
+        User.findOne({ where: { email: profile.emails[0].value } })
+          .then(async (user) => {
+            let isCreated = false;
+            let createUser: User;
             if (!user) {
-              const createUser = new User({
-                email: profile.id,
+              createUser = new User({
+                email: profile.emails[0].value,
                 nickname: profile.displayName,
                 password: "google_provided",
               });
 
-              createUser
-                .save()
-                .then(() => {
-                  return cb(null, createUser);
-                })
-                .catch((err) => {
-                  return cb(err, createUser);
-                });
-            }
+              await createUser.save().catch((err) => {
+                console.error(err);
+              });
+
+              isCreated = true;
+            } else if (user.password !== "google_provided")
+              return cb(null, false, { message: "Not a google account." });
+
+            if (isCreated)
+              return cb(null, false, { message: "Sign up success!" });
             return cb(null, user);
           })
           .catch((err) => {
