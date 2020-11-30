@@ -11,9 +11,21 @@ router.post("/", isAuth, async (req: UserRequest, res: Response) => {
 
   try {
     const r = await Repo.create(repo);
-    res.status(200).send(r);
+    return res.status(200).send(r);
   } catch (err) {
-    res.status(500).send(err);
+    return res.status(500).send(err);
+  }
+});
+
+router.delete("/:id", async (req: UserRequest, res: Response) => {
+  const { id } = req.params;
+  const userEmail = req?.user?.email;
+
+  try {
+    await Repo.destroy({ where: { id, userEmail } });
+    return res.status(200).send("repository delete complete");
+  } catch (err) {
+    return res.status(400).send(err);
   }
 });
 
