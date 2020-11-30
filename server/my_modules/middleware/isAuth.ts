@@ -1,5 +1,5 @@
 import { Response, NextFunction } from "express";
-import UserRequest from "../../interface/request";
+import { UserRequest } from "../../interface/request";
 
 interface ResObj {
   isAuth: boolean;

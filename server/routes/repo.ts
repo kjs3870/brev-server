@@ -1,11 +1,11 @@
 import express, { Response } from "express";
 import isAuth from "../my_modules/middleware/isAuth";
-import userRequest from "../interface/request";
+import { UserRequest } from "../interface/request";
 import Repo from "../sequelize/models/repo.model";
 
 const router: express.Router = express.Router();
 
-router.post("/", isAuth, async (req: userRequest, res: Response) => {
+router.post("/", isAuth, async (req: UserRequest, res: Response) => {
   const repo = req.body as Repo;
   repo.userEmail = req.user.email;
 

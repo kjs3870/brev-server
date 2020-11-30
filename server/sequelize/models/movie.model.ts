@@ -78,6 +78,7 @@ class Movie extends Model<Movie> {
   watched: boolean;
 
   @ForeignKey(() => User)
+  @AllowNull(false)
   @Column
   userEmail: string;
 

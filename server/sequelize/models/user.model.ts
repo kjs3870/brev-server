@@ -10,6 +10,7 @@ import {
 } from "sequelize-typescript";
 import Movie from "./movie.model";
 import Repo from "./repo.model";
+import SelfIntro from "./self-intro.model";
 
 @Table({
   charset: "utf8mb4",
@@ -39,6 +40,9 @@ class User extends Model<User> {
 
   @HasMany(() => Repo)
   repos: Repo[];
+
+  @HasMany(() => SelfIntro)
+  selfintros: SelfIntro[];
 }
 
 export default User;

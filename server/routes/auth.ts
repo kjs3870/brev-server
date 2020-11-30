@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import passport from "passport";
 import isAuth from "../my_modules/middleware/isAuth";
-import UserRequest from "../interface/request";
+import { UserRequest } from "../interface/request";
 import User from "../sequelize/models/user.model";
 import Movie from "../sequelize/models/movie.model";
 import Repo from "../sequelize/models/repo.model";

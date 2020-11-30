@@ -6,7 +6,7 @@ import {
   MovieItemResponse,
   MovieResponseDetail,
 } from "../interface/movie";
-import userRequest from "../interface/request";
+import { UserRequest } from "../interface/request";
 import AppConfig from "../config/config.secret";
 import getMovieDetail from "../scraper";
 import registMovie from "../sequelize/transaction/movieRegister";
@@ -45,7 +45,7 @@ router.get("/search", (req: Request, res: Response) => {
     .catch((err) => console.log(err));
 });
 
-router.post("/regist", (req: userRequest, res: Response) => {
+router.post("/regist", (req: UserRequest, res: Response) => {
   const movie = req.body as MovieResponseDetail;
   const email = req?.user?.email;
   if (email !== undefined) {
