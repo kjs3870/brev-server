@@ -1,4 +1,10 @@
-import { Table, Column, Model, ForeignKey } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  ForeignKey,
+  AllowNull,
+} from "sequelize-typescript";
 import Genre from "./genre.model";
 import Movie from "./movie.model";
 
@@ -10,10 +16,12 @@ import Movie from "./movie.model";
 })
 class MovieGenre extends Model<MovieGenre> {
   @ForeignKey(() => Movie)
+  @AllowNull(false)
   @Column
   movieId: number;
 
   @ForeignKey(() => Genre)
+  @AllowNull(false)
   @Column
   genreCode: number;
 }

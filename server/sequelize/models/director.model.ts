@@ -20,6 +20,7 @@ class Director extends Model<Director> {
   name: string;
 
   @ForeignKey(() => Movie)
+  @AllowNull(false)
   @Column
   movieId: number;
 

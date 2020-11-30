@@ -24,6 +24,7 @@ class Repo extends Model<Repo> {
   url: string;
 
   @ForeignKey(() => User)
+  @AllowNull(false)
   @Column
   userEmail: string;
 
