@@ -1,6 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { MovieDetail } from "./interface/movie";
+import { MovieDetail } from "../interface/movie";
 
 const getMovieDetail = async (code: string): Promise<MovieDetail> => {
   const html = await axios.get(

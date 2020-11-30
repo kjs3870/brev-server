@@ -1,7 +1,7 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import Country from "./models/country.model";
-import sequelize from "./sequelize";
+import Country from "../sequelize/models/country.model";
+import sequelize from "../sequelize/sequelize";
 
 sequelize.sync().catch((err) => console.error(err));
 
