@@ -8,8 +8,9 @@ import {
 } from "../interface/movie";
 import { UserRequest } from "../interface/request";
 import AppConfig from "../config/config.secret";
-import getMovieDetail from "../scraper";
-import registMovie from "../sequelize/transaction/movieRegister";
+import getMovieDetail from "../my_modules/scraper";
+import registMovie from "../sequelize/transaction/registMovie";
+import deleteMovie from "../sequelize/transaction/deleteMovie";
 
 const router: express.Router = express.Router();
 
@@ -64,6 +65,18 @@ router.get("/search/:code", async (req: Request, res: Response) => {
     res.status(200).send({ detail });
   } catch (err) {
     console.error(err);
+  }
+});
+
+router.delete("/:id", async (req: UserRequest, res: Response) => {
+  const movieId = Number(req.params.id);
+  const userEmail = req?.user?.email;
+
+  try {
+    await deleteMovie(movieId, userEmail);
+    return res.status(200).send("movie delete complete");
+  } catch (err) {
+    return res.status(400).send(err);
   }
 });
 
