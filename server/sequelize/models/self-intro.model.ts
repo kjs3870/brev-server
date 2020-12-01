@@ -48,7 +48,7 @@ class SelfIntro extends Model<SelfIntro> {
   @Column
   userEmail: string;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, { onDelete: "CASCADE" })
   user: User;
 }
 

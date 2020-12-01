@@ -28,7 +28,7 @@ class Repo extends Model<Repo> {
   @Column
   userEmail: string;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, { onDelete: "CASCADE" })
   user: User;
 }
 

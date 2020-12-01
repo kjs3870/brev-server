@@ -24,7 +24,7 @@ class Actor extends Model<Actor> {
   @Column
   movieId: number;
 
-  @BelongsTo(() => Movie)
+  @BelongsTo(() => Movie, { onDelete: "CASCADE" })
   movie: Movie;
 }
 
