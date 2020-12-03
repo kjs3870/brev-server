@@ -11,7 +11,7 @@ import Actor from "../sequelize/models/actor.model";
 import Director from "../sequelize/models/director.model";
 
 const router = express.Router();
-const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL = "/";
 
 const getUserInfo = async (email: string) => {
   const userInfo = await User.findOne({

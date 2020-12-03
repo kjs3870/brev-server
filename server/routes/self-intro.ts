@@ -29,8 +29,8 @@ router.post("/", (req: SelfIntroRequest, res: Response) => {
   };
 
   SelfIntro.create(intro)
-    .then(() => {
-      res.status(200).send("regist complete");
+    .then((result) => {
+      res.send({ lastInsertId: result.id });
     })
     .catch((err) => console.error(err));
 });
@@ -40,7 +40,7 @@ router.get("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
   SelfIntro.findOne({ where: { id } })
     .then((data) => {
-      res.json(data);
+      res.status(200).json(data);
     })
     .catch((err) => console.error(err));
 });
