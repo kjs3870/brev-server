@@ -5,4 +5,11 @@ interface UserUpdate {
   newPasswordConfirm?: string;
 }
 
-export default UserUpdate;
+interface UserSignUp {
+  email: string;
+  nickname: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export { UserUpdate, UserSignUp };
