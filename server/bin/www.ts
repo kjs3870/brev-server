@@ -1,8 +1,10 @@
-import app from "../app";
 import { createServer } from "http";
+import dotenv from "dotenv";
+import app from "../app";
 
-const port: number = Number(process.env.PORT) || 3003;
+dotenv.config();
 
+const port = Number(process.env.PORT);
 const server = createServer(app);
 
 server.listen(port, () => {

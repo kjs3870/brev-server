@@ -2,9 +2,11 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as NaverStrategy } from "passport-naver";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import User from "../sequelize/models/user.model";
-import AppConfig from "../config/config.secret";
+
+dotenv.config();
 
 const passportConfig = (): void => {
   passport.serializeUser((user: User, done) => {
@@ -47,7 +49,11 @@ const passportConfig = (): void => {
 
   passport.use(
     new NaverStrategy(
-      AppConfig.naver,
+      {
+        clientID: process.env.NAVER_CLIENT_ID,
+        clientSecret: process.env.NAVER_CLIENT_SECRET,
+        callbackURL: "/api/auth/login/naver/callback",
+      },
       (accessToken, refreshToken, profile, done) => {
         User.findOne({ where: { email: profile.emails[0].value } })
           .then(async (user) => {
@@ -81,7 +87,11 @@ const passportConfig = (): void => {
 
   passport.use(
     new GoogleStrategy(
-      AppConfig.google,
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "/api/auth/login/google/callback",
+      },
       (accessToken, refreshToken, profile, cb) => {
         User.findOne({ where: { email: profile.emails[0].value } })
           .then(async (user) => {

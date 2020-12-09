@@ -4,11 +4,14 @@ import session from "express-session";
 import passport from "passport";
 import flash from "connect-flash";
 import path from "path";
+import dotenv from "dotenv";
 import sequelize from "./sequelize/sequelize";
 import passportConfig from "./passport/passport";
 import apiRouter from "./routes/api";
 
 const app: express.Application = express();
+
+dotenv.config();
 sequelize.sync().catch((err) => console.log(err));
 
 // app.set("views", `${__dirname}/views`);
@@ -21,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })

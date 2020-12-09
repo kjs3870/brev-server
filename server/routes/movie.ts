@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import axios from "axios";
+import dotenv from "dotenv";
 import {
   MovieResponse,
   MovieDetail,
@@ -7,10 +8,11 @@ import {
   MovieResponseDetail,
 } from "../interface/movie";
 import { UserRequest } from "../interface/request";
-import AppConfig from "../config/config.secret";
 import getMovieDetail from "../my_modules/scraper";
 import registMovie from "../sequelize/transaction/registMovie";
 import deleteMovie from "../sequelize/transaction/deleteMovie";
+
+dotenv.config();
 
 const router: express.Router = express.Router();
 
@@ -20,8 +22,8 @@ router.get("/search", (req: Request, res: Response) => {
     .get("https://openapi.naver.com/v1/search/movie.json", {
       params: { query },
       headers: {
-        "X-Naver-Client-Id": AppConfig.naver.clientID,
-        "X-Naver-Client-Secret": AppConfig.naver.clientSecret,
+        "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID,
+        "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET,
       },
     })
     .then((data: MovieResponse) => {
